@@ -1,26 +1,26 @@
-'use strict'
+'use strict';
 
-const { response } = require('express');
+// require('dotenv').config();
 const express = require('express');
-const { request } = require('http');
 const app = express();
-const PORT = 8080;
+
+const PORT = process.env.PORT || 3000;
 
 app.use(express.static('./public'));
 
-// routes
-// app.get('/', (request, reponse )=>{
-//     reponse.status(200).send('Hello');
-// });
-
-app.get('/about', (request, reponse )=>{
-    reponse.status(200).send('About me ');
+app.get('/hello', (request, response) => {
+  response.status(200).send('Hello');
 });
 
-// app.use('*', (request, response)=>{
-//     response.send('An arror occured');
-// })
-
-app.listen(PORT, ()=>{
-    console.log(`Listening to port ${PORT}`);
+app.get('/data', (request, response) => {
+  let airplanes = {
+    departure: Date.now(),
+    canFly: true,
+    pilot: 'Well Trained'
+  }
+  response.status(200).json(airplanes);
 });
+
+app.use('*', (request, response) => response.send('Sorry, that route does not exist.'))
+
+app.listen(PORT,() => console.log(`Listening on port ${PORT}`));
